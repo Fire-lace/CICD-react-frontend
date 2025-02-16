@@ -15,7 +15,7 @@ pipeline {
                         branches: [[name: '*/main']], // Replace 'main' with your branch if needed
                         userRemoteConfigs: [[
                             url: 'https://github.com/Fire-lace/CICD-react-frontend.git',
-                            credentialsId: 'your-credentials-id' // Replace with your credentials ID
+                            credentialsId: 'a66807d7-1713-4c32-87a4-998dc556be20' // Replace with your credentials ID
                         ]]
                     ])
                 }
