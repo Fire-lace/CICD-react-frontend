@@ -2,32 +2,52 @@ pipeline {
     agent any
 
     tools {
-        nodejs "nodejs"
+        nodejs "nodejs" // Ensure the correct Node.js tool is set up in Jenkins
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/Fire-lace/CICD-react-frontend.git'
+                script {
+                    // Checkout from GitHub using credentials
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/main']], // Replace 'main' with your branch if needed
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/Fire-lace/CICD-react-frontend.git',
+                            credentialsId: 'your-credentials-id' // Replace with your credentials ID
+                        ]]
+                    ])
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install' // Install Node.js dependencies
             }
         }
 
         stage('Build React App') {
             steps {
-                sh 'npm run build'
+                sh 'npm run build' // Build the React app
             }
         }
 
         stage('Deploy') {
             steps {
+                // Add your deployment logic here
                 echo 'Deployment step will be configured later...'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs for errors.'
         }
     }
 }
