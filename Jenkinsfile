@@ -6,22 +6,13 @@ pipeline {
     }
     
     tools {
-        nodejs 'nodejs'  // Ensure this is correctly configured in Jenkins
+        nodejs 'nodejs'
     }
     
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/jenkins']],
-                        userRemoteConfigs: [[
-                            url: 'https://github.com/soundn/CICD-react-frontend.git',
-                            credentialsId: 'new'  // Add Git credentials
-                        ]]
-                    ])
-                }
+                git branch: 'jenkins', url: 'https://github.com/Fire-lace/CICD-react-frontend.git'
             }
         }
         
@@ -29,13 +20,6 @@ pipeline {
             steps {
                 sh 'node --version'
                 sh 'npm --version'
-            }
-        }
-        
-        stage('Clean Workspace') {
-            steps {
-                sh 'rm -rf node_modules package-lock.json'
-                sh 'npm cache clean --force'
             }
         }
         
@@ -62,14 +46,14 @@ pipeline {
                 sshagent(credentials: ['ssh-credential-id']) {
                     sh '''
                         mkdir -p ~/.ssh
-                        ssh-keyscan -H 44.204.240.11 >> ~/.ssh/known_hosts
-                        scp -r dist/* ubuntu@176.58.103.72:/tmp/react-app
+                        ssh-keyscan -H 3.84.22.162 >> ~/.ssh/known_hosts
+                        scp -r dist/* ubuntu@3.84.22.162:/tmp/react-app
                         
-                        ssh -o StrictHostKeyChecking=no ubuntu@176.58.103.72 "
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.84.22.162 "
                             sudo apt update && sudo apt upgrade -y
-                            echo 'Successful Cache Update'
+                            echo "Successful Cache Update"
                             sudo apt install nginx -y
-                            echo 'Successful Nginx Installation'
+                            echo "Successful Nginx Installation"
                             sudo systemctl start nginx
                             sudo cp -r /tmp/react-app/* /var/www/html
                             sudo systemctl restart nginx
