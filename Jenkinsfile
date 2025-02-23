@@ -46,10 +46,10 @@ pipeline {
                 sshagent(credentials: ['nodejs']) {
                     sh '''
                         mkdir -p ~/.ssh
-                        ssh-keyscan -H 54.209.226.89 >> ~/.ssh/known_hosts
-                        scp -r dist/* ubuntu@54.209.226.89:/tmp/react-app
+                        ssh-keyscan -H 3.90.7.35 >> ~/.ssh/known_hosts
+                        scp -r dist/* ubuntu@3.90.7.35:/tmp/react-app
                         
-                        ssh -o StrictHostKeyChecking=no ubuntu@54.209.226.89 "
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.90.7.35 "
                             sudo apt update && sudo apt upgrade -y
                             echo "Successful Cache Update"
                             sudo apt install nginx -y
