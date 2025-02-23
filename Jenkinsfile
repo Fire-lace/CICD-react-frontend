@@ -43,7 +43,7 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                sshagent(credentials: ['nodejs']) {
+                sshagent(credentials: ['first']) {
                     sh '''
                         mkdir -p ~/.ssh
                         ssh-keyscan -H 3.90.7.35 >> ~/.ssh/known_hosts
